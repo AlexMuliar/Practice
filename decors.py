@@ -17,21 +17,17 @@ class Bench:
 
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
-        params = True
-
-        if self.fn is None:
+        if self.fn == None:
             self.fn = args[0]
-            params = False
 
-        @wraps(self.fn)
-        def wrap(*args, **kwds):
+        def wrap1(*c, **d):
             start = datetime.now()
             for _ in range(self.times_):
-                res = self.fn(*args, **kwds)
+                res = self.fn(*c, **d)
             print(f"{self.fn.__name__}: {datetime.now() - start}")
             return res
-        return wrap if not params else wrap(*args, **kwds)
 
+        return wrap1 if len(args) and callable(args[0]) else wrap1(*args, **kwds)
 
 
 def bench(times=1):
@@ -61,8 +57,8 @@ def bench(times=1):
 
 
 # @bench(10**6)
-@Bench
-# @Bench(times=10**6)
+# @Bench
+@Bench(times=10**6)
 def f(*args):
     return sum(args)
 
