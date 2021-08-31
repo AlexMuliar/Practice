@@ -1,0 +1,12 @@
+version: "3"
+services:
+  testapp:
+    build: simple_app/
+    # command: python app.py
+    ports:
+      - 5001:5000
+  testdb:
+    build: test_db/
+    ports:
+      - 5432:5432
+
